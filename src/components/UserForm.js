@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 function Input({values, errors, touched}) {
-
+    
     return (
         <Form>
         <div>
@@ -49,13 +49,13 @@ export const UserForm = withFormik({
             .required('Password is Required')
     }),
 
-    handleSubmit(values, {props}) {
-    //    console.log(props)
+    handleSubmit(values, {props, resetForm}) {
+       console.log(props)
         axios
             .post(`https://reqres.in/api/users`, values)
             .then(response => {
                 props.updateUsers(response.data)
-                props.resetForm()
+                resetForm()
             })
             .catch(error => console.log(error))
     }
