@@ -1,6 +1,7 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 
 function Input({values, errors, touched}) {
@@ -28,7 +29,7 @@ function Input({values, errors, touched}) {
     )
 }
 
-const UserForm = withFormik({
+export const UserForm = withFormik({
     mapPropsToValues({name, email, password, terms}) {
         return {
             name: name || '',
@@ -48,10 +49,19 @@ const UserForm = withFormik({
             .required('Password is Required')
     }),
 
-    handleSubmit(values) {
-        console.log(values)
+    handleSubmit(values, {props}) {
+    //    console.log(props)
+        axios
+            .post(`https://reqres.in/api/users`, values)
+            .then(response => {
+                props.updateUsers(response.data)
+                props.resetForm()
+            })
+            .catch(error => console.log(error))
     }
     
-})(Input);
+})(Input)
 
-export default UserForm;
+
+
+
